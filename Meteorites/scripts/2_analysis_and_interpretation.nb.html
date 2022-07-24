@@ -1760,9 +1760,251 @@ pre code {
 
 
 <!-- rnb-text-begin -->
+<div id="libraries--" class="section level1">
+<h1>Libraries —-</h1>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0ZXN0dGhhdClcbmBgYCJ9 -->
+<pre class="r"><code>library(testthat)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="data--" class="section level1">
+<h1>Data —-</h1>
+<p>Reading in cleaned data from the associated R script for cleaning
+data.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWV0ZW9yaXRlc19jbGVhbmVkXG5gYGAifQ== -->
+<pre class="r"><code>meteorites_cleaned</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="exploratory-analysis-" class="section level1">
+<h1>Exploratory analysis—-</h1>
+<div id="largest-meteorites" class="section level2">
+<h2>10 largest meteorites</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWV0ZW9yaXRlc19jbGVhbmVkICU+JSBcbiAgc2xpY2VfbWF4KG1hc3NfZywgbiA9IDEwKVxuYGBgIn0= -->
+<pre class="r"><code>meteorites_cleaned %&gt;% 
+  slice_max(mass_g, n = 10)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjcsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgeCA3Il19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnJWVFMyZ1RRUmllcEhrMFc5TUs1dUJCSVhqd1pBSkpFRTBqWldKS29vSVNMSlZhRCswa3UybVdUSGJDWnRlMFJhd0gwWXExRnhFRjJ4d0tRaW40Z1BibVpSR3NnaGNQUW52UWcvWWlYbG9RQlJFYWQrY1JiUERxd1BEOS8vZlAvNXlaaTRNakNXbEVBZ0IwQVkvTERicTh0Z2g4bVh3c2Zqd09nTWR0YXk3Z0FRRUhKKzFUQjJ6QmIrOWVlMHZ3VGRJNUR1RGFQTWNaam5jWUxnMHdmSjNuL0hlRzcwMkdHeEtrdUhvQzhMWGZpY3NUZXM2UUF1SnlJSU5xU3ZneTBTdWM2TXVnYW8yRVpRV0hNNnFDQ2FlREdhUk5FUzA4cUtKQ20vU245U3JTakNtdStuSnFRU0VhMTZSTTJhd2hXZEZKblRNOTUwMU4xbEZCeFZpazN6ZWtWc3JFVUNKcHJMWWRUNk9pV1ZCMTFTQmlJT201aFpOT0YrbTcxbldLdHpkdVVyekcrZW5WSFlxVDc1WXBObzQxS1Y3ZEdxZG9icCtpYVB3KytJK0JlTFBFcnV6L0s1NnNndkZlZzdqeEpxc0tMcFFwenRCMi9FdHdjWTd4aTh2Yy9vTGpEdWMvTW14aXJoOFNOMDdqV29rSHc0Zkw2L2ZoVVBmczlEMTUwMG8xR3M5bFh6OU0zeW81QytadTBNTldraUZNTVdkcjRPMXMvdkd2ZFpnTFRYL09QUXZCL2dSZDdYcGozMWErUEV4V3JYenE1VlByVVk5MTRkeksvRnJ4ckhYbDFaSFEwVjBkWHVMOXhIbTgwU3pMTjdaRjQ4RHhEMTlEK2UxUDF1aVA0ZHhvN0VuSGwvQnFxS3JVK1MzNU9lbFcyM04wek9MUlZWRzlQalloTENYVW5yQm5Ta0U2bDdzeE1sVERsSVZYQUJOdGdoRjdNd2QwMG9pSzdFRW5xek9ZVnF2MXM3UEVJcllUOHhJRktjbklRTkdTN3BRSHdHNkhpNS9VREpWb3RwUGIrZTdlRG1lWDNrSDBtWnBUaVJ3cGxrMnRFb25URit1WTJRcHlXZnBMOXJPVTdoWVA1UlZUVXV4Mk5kRzlGNk9DSXNiVWEzZE1HNDdXZEZVelJDYzJXNDhheEVEaW5GUWtXREMwTjdEN0IwUWxQaFRtQkFBQSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["mass_g"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["fall"],"name":[4],"type":["chr"],"align":["left"]},{"label":["year"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["latitude"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["longitude"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"11890","2":"Hoba","3":"60000000","4":"Found","5":"1920","6":"-19.58333","7":"17.91667"},{"1":"5262","2":"Cape York","3":"58200000","4":"Found","5":"1818","6":"76.13333","7":"-64.93333"},{"1":"5247","2":"Campo del Cielo","3":"50000000","4":"Found","5":"NA","6":"-27.46667","7":"-60.58333"},{"1":"5257","2":"Canyon Diablo","3":"30000000","4":"Found","5":"1891","6":"35.05000","7":"-111.03333"},{"1":"2335","2":"Armanty","3":"28000000","4":"Found","5":"1898","6":"47.00000","7":"88.00000"},{"1":"10912","2":"Gibeon","3":"26000000","4":"Found","5":"1836","6":"-25.50000","7":"18.00000"},{"1":"5363","2":"Chupaderos","3":"24300000","4":"Found","5":"1852","6":"27.00000","7":"-105.10000"},{"1":"16852","2":"Mundrabilla","3":"24000000","4":"Found","5":"1911","6":"-30.78333","7":"127.55000"},{"1":"23593","2":"Sikhote-Alin","3":"23000000","4":"Fell","5":"1947","6":"46.16000","7":"134.65333"},{"1":"4919","2":"Bacubirito","3":"22000000","4":"Found","5":"1863","6":"26.20000","7":"-107.83333"}],"options":{"columns":{"min":{},"max":[10],"total":[7]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The 10 largest meteorites were: 1) Hoba (1920): 60000000 grams 2)
+Cape York (1818): 58200000 grams 3) Campo del Cielo (Year missing):
+50000000 grams 4) Canyon Diablo (1891): 30000000 grams 5) Armanty
+(1898): 28000000 grams 6) Gibeon (1836): 26000000 grams 7) Chupaderos
+(1852): 24300000 8) Mundrabilla (1911): 24000000 9) Sikhote-Alin (1947):
+23000000 10) Bacubirito (1863): 22000000</p>
+<p>It is potentially of interest that only one of the top 10 largest
+meteorites is in the “Fell” category. Also none of them are very recent,
+the latest meteorite in the top 10 fell in 1947.</p>
+</div>
+<div id="falling-vs-found-meteorites" class="section level2">
+<h2>Falling vs Found meteorites</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWV0ZW9yaXRlc19jbGVhbmVkICU+JSBcbiAgZ3JvdXBfYnkoZmFsbCkgJT4lIFxuICBzdW1tYXJpc2UobWVhbihtYXNzX2cpKVxuYGBgIn0= -->
+<pre class="r"><code>meteorites_cleaned %&gt;% 
+  group_by(fall) %&gt;% 
+  summarise(mean(mass_g))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MiwibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIyIHggMiJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJndHlpVERtaXVCaVlHQmdabUJoWkdKZ1pnVXlHZGljQXd5TlRJMFlHRmlZZ0R4R0JoWUdUaEJkQVZRbERHU0FCQVhBTkVTQ3hTMDFKd2ZLWm5YTEw4MUxBVEw0UUFvY1BzemhpajE1NDRBamc3dS9zdFRwOTJnbXN1WWw1cVlXbzV1V2xnZzNqU2MzTlRGUEl6ZXh1RGcrWFJOTk0yZFJmcmtlekFCZWtBRU5RT0wvLy8vLzBHMUp6Z0VhQUxVRkpzaVZrbGlTcUpkV0JOUVA1S0ZyWWM4dktNbk16d05xWWdKNW1CVk5NMk1SbWdCL2FSN0lKU202eVJtbGVkbTZ4aUFMd05JUXdBdGxNNkd5UVZZeS9ZY2F4UW8xaWkwMUx6MHpMeFhtOXB6RXBGUllhUEFCZlF6MnNGNUJVV1plQ2N3blFORml2Wkw4a2tTWU9xN2svQnlZQ05odkRQOEFIaTRXOWVnQkFBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["fall"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean(mass_g)"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Fell","2":"68032.65"},{"1":"Found","2":"133353.89"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>When we compare the mean mass of falling vs found meteorites, we can
+see that the mean mass of found meteorites is 133,353.89 grams while the
+mean mass of falling meteorites is only 68,032.65. The mean mass of
+found meteorites is roughly 96% more than falling meteorites.</p>
+</div>
+<div id="meteorities-since-2000" class="section level2">
+<h2>Meteorities since 2000</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWV0ZW9yaXRlc19jbGVhbmVkICU+JSBcbiAgZmlsdGVyKHllYXIgPj0gMjAwMCkgJT4lIFxuICBncm91cF9ieSh5ZWFyKSAlPiUgXG4gIHRhbGx5KClcbmBgYCJ9 -->
+<pre class="r"><code>meteorites_cleaned %&gt;% 
+  filter(year &gt;= 2000) %&gt;% 
+  group_by(year) %&gt;% 
+  tally()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTQsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTQgeCAyIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQmwyUXdVckRRQkNHSjl1azBvQlY4RGthc05LRHQ0QUZQWGdvNGlHQ0I5Y2t0c0c0Q2NrVzdjMFg4T0lMOU9nNytBbzkrUnplZklER2Y5Tlp4QVQrZkxPek03TXpjeldOVHZ6SUo2SWV1WTZnbmdlVCttZXo0L0ZrVE9RS25CeHlhV0Q0Z3FnakdNWTVOQXJYb1FtbmNEMWxYakF2bVRQbU5UTmkzakx2bUFsendjeVpKVk1UZi92ODlqZjBDVzJnTCtnTmVvYytvSFBJRko1RE45QUttdXo2L2plUXArUlRXc000YkM5M1RuZVZ5c3BPckRvWmc2cDREbXlXYVVXODR0YzB6VSszZEp6TDJwYTJUaitSV2dZUEZmSngyblpTOW9wU1o0VkNrakJMOWpySlR0VnhIQ3lWNlNRWnhZdWxlaHlkbWdmYTY3OUZPYndzYS9NQ1JNT2xQQzdWVDlVOFU2bnRQWmYzYWM2SElTWnVCdzdLS2xQYVRnSnZIZWhDU3h2bngwVnVQZTFzdFAwRnlEYWZmVndDQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["year"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"2000","2":"235"},{"1":"2001","2":"186"},{"1":"2002","2":"203"},{"1":"2003","2":"209"},{"1":"2004","2":"141"},{"1":"2005","2":"146"},{"1":"2006","2":"167"},{"1":"2007","2":"71"},{"1":"2008","2":"96"},{"1":"2009","2":"103"},{"1":"2010","2":"89"},{"1":"2011","2":"121"},{"1":"2012","2":"53"},{"1":"2013","2":"2"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[14]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The table above shows the number of meteorites for the years 2000 -
+2013. The most meteorites were observed in 2000 (n = 235) and the least
+meteorites were observed in 2013 (n = 2). The number of meteorites in
+2013 stands out as particularly low, which could indicate that the data
+for this year is incomplete, particularly since this was the most recent
+year recorded in the cleaned data.</p>
+</div>
+</div>
+<div id="function-for-meteorite-count-" class="section level1">
+<h1>Function for meteorite count—-</h1>
+<p>The function below takes two arguments - a dataset and a year of
+interest. If there was more than 1 meteorite observed in that year, it
+will return the number of meteorites. If there aren’t any meteorites
+recorded for that year, it will say that “As far as we know, there were
+no meteorites that year”.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2V0X21ldGVvcml0ZV9jb3VudCA8LSBmdW5jdGlvbihkYXRhc2V0LCB5ZWFyX29mX2ludGVyZXN0KXtcbiBcbiAgI1B1bGxzIHRoZSBudW1iZXIgb2YgbWV0ZW9yaXRlcyBmcm9tIHRoZSB5ZWFyIG9mIGludGVyZXN0IGluIHRoZSBkYXRhc2V0XG4gIG1ldGVvcml0ZV9jb3VudCA8LSBkYXRhc2V0ICU+JSBcbiAgZmlsdGVyKHllYXIgPT0geWVhcl9vZl9pbnRlcmVzdCkgJT4lIFxuICB0YWxseSgpICU+JSBcbiAgcHVsbCgpXG4jVXNlcyB0aGUgbWV0ZW9yaXRlIGNvdW50IGZyb20gYWJvdmUgYW5kIHJldHVybnMgdGhlIG51bWJlciBvZiBtZXRlb3JpdGVzIGlmIHRoZXJlIHdhcyBhdCBsZWFzdCBvbmUgY291bnRlZCBpbiB0aGF0IHllYXJcbmlmKG1ldGVvcml0ZV9jb3VudCA+PSAxKXtcbiAgcmV0dXJuKHBhc3RlMChcIkluIFwiLCB5ZWFyX29mX2ludGVyZXN0LCBcIiB0aGVyZSB3ZXJlIFwiLCBtZXRlb3JpdGVfY291bnQsIFwiIG1ldGVvcml0ZXNcIikpXG59XG5pZihtZXRlb3JpdGVfY291bnQgPT0gMCl7XG4gIHJldHVybihcIkFzIGZhciBhcyB3ZSBrbm93LCB0aGVyZSB3ZXJlIG5vIG1ldGVvcml0ZXMgdGhhdCB5ZWFyXCIpXG59XG59XG5gYGAifQ== -->
+<pre class="r"><code>get_meteorite_count &lt;- function(dataset, year_of_interest){
+ 
+  #Pulls the number of meteorites from the year of interest in the dataset
+  meteorite_count &lt;- dataset %&gt;% 
+  filter(year == year_of_interest) %&gt;% 
+  tally() %&gt;% 
+  pull()
+#Uses the meteorite count from above and returns the number of meteorites if there was at least one counted in that year
+if(meteorite_count &gt;= 1){
+  return(paste0(&quot;In &quot;, year_of_interest, &quot; there were &quot;, meteorite_count, &quot; meteorites&quot;))
+}
+if(meteorite_count == 0){
+  return(&quot;As far as we know, there were no meteorites that year&quot;)
+}
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="plans-for-improvingtesting-the-get_meteorite-function" class="section level2">
+<h2>Plans for improving/testing the get_meteorite() function</h2>
+<p>The get_meteorite() function could be improved in the following
+ways:</p>
+<ol style="list-style-type: decimal">
+<li><p>The function could also identify the earliest and latest date
+where a meteor was observed in the dataset and return a warning that
+“this year is out of the bounds of the specified dataset” if a year
+before or after the earliest and latest date is entered. This could be
+added at the beginning of the dataset</p></li>
+<li><p>The function should stop if non-numeric data is entered in the
+year_of_interest variable. This could be added at the beginning of the
+function.</p></li>
+<li><p>The function shouldn’t be used on a dataset that isn’t about
+meteorites. Right now it will work on any dataset with the variable
+“year” because all it does is tally the number of observations in that
+year. It is possible that we could specify a default value for dataset
+in the function. Right now the R script that cleans meteorite data
+assigns the name “meteorites_cleaned” to the resulting dataset - perhaps
+“meteorites_cleaned” could be the default value for dataset in the
+function?</p></li>
+</ol>
+<p>Test plans for the function 1) A year where 1 or more meteorites were
+observed should return an appropriate meteorite count. Example input:
+2000. Expected output: In 2000, there were 235 meteorites. 2) A year
+that is not in the dataset should return “As far as we know, there were
+no meteorites that year”. Example input: 1599. Expected output: “As far
+as we know, there were no meteorites that year” 3) Non-numeric input
+should return an error. Example input: “year”, TRUE. Expected output: an
+error.</p>
+</div>
+<div id="testing-the-function" class="section level2">
+<h2>Testing the function</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG50ZXN0X3RoYXQoXCJDaGFyYWN0ZXIgaW5wdXQgcmV0dXJucyBhbiBlcnJvclwiLCB7XG4gIGV4cGVjdF9lcnJvcihnZXRfbWV0ZW9yaXRlX2NvdW50KFRSVUUpKVxuICBleHBlY3RfZXJyb3IoZ2V0X21ldGVvcml0ZV9jb3VudChcInllYXJcIikpXG59KVxuYGBgIn0= -->
+<pre class="r"><code>
+test_that(&quot;Character input returns an error&quot;, {
+  expect_error(get_meteorite_count(TRUE))
+  expect_error(get_meteorite_count(&quot;year&quot;))
+})</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiVGVzdCBwYXNzZWQgXG4ifQ== -->
+<pre><code>Test passed </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The test was passed, so entering logical and character input into the
+function does return an error, but we should also check to see what kind
+of error is returned.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2V0X21ldGVvcml0ZV9jb3VudChcIjE5MjdcIilcbmBgYCJ9 -->
+<pre class="r"><code>get_meteorite_count(&quot;1927&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gVXNlTWV0aG9kKFwiZmlsdGVyXCIpIDogXG4gIG5vIGFwcGxpY2FibGUgbWV0aG9kIGZvciAnZmlsdGVyJyBhcHBsaWVkIHRvIGFuIG9iamVjdCBvZiBjbGFzcyBcImNoYXJhY3RlclwiXG4ifQ== -->
+<pre><code>Error in UseMethod(&quot;filter&quot;) : 
+  no applicable method for &#39;filter&#39; applied to an object of class &quot;character&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>This error is fairly helpful, but it could be more explicit what went
+wrong if we used the stop() function to specify that the
+year_of_interest input was causing the error.</p>
+</div>
+<div id="improving-the-function" class="section level2">
+<h2>Improving the function</h2>
+<p>Adding a stop() function at the beginning to specifically identify
+errors where the input in year_of_interest is non-numeric will improve
+the function.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5yZWZhY3Rvcl9nZXRfbWV0ZW9yaXRlX2NvdW50IDwtIGZ1bmN0aW9uKGRhdGFzZXQsIHllYXJfb2ZfaW50ZXJlc3Qpe1xuIFxuICAjU3RvcHMgdGhlIGZ1bmN0aW9uIGlmIHllYXIgb2YgaW50ZXJlc3QgaXMgbm9uLW51bWVyaWNcbiAgaWYoIWlzLm51bWVyaWMoeWVhcl9vZl9pbnRlcmVzdCkpe1xuICAgIHN0b3AoXCJOb24tbnVtZXJpYyBpbnB1dCBpbiB5ZWFyX29mX2ludGVyZXN0IDooXCIpXG4gIH1cbiAgXG4gICNQdWxscyB0aGUgbnVtYmVyIG9mIG1ldGVvcml0ZXMgZnJvbSB0aGUgeWVhciBvZiBpbnRlcmVzdCBpbiB0aGUgZGF0YXNldFxuICBtZXRlb3JpdGVfY291bnQgPC0gZGF0YXNldCAlPiUgXG4gIGZpbHRlcih5ZWFyID09IHllYXJfb2ZfaW50ZXJlc3QpICU+JSBcbiAgdGFsbHkoKSAlPiUgXG4gIHB1bGwoKVxuICBcbiNVc2VzIHRoZSBtZXRlb3JpdGUgY291bnQgZnJvbSBhYm92ZSBhbmQgcmV0dXJucyB0aGUgbnVtYmVyIG9mIG1ldGVvcml0ZXMgaWYgdGhlcmUgd2FzIGF0IGxlYXN0IG9uZSBjb3VudGVkIGluIHRoYXQgeWVhclxuaWYobWV0ZW9yaXRlX2NvdW50ID49IDEpe1xuICByZXR1cm4ocGFzdGUwKFwiSW4gXCIsIHllYXJfb2ZfaW50ZXJlc3QsIFwiIHRoZXJlIHdlcmUgXCIsIG1ldGVvcml0ZV9jb3VudCwgXCIgbWV0ZW9yaXRlc1wiKSlcbn1cbmlmKG1ldGVvcml0ZV9jb3VudCA9PSAwKXtcbiAgcmV0dXJuKFwiQXMgZmFyIGFzIHdlIGtub3csIHRoZXJlIHdlcmUgbm8gbWV0ZW9yaXRlcyB0aGF0IHllYXJcIilcbn1cbn1cblxuYGBgIn0= -->
+<pre class="r"><code>
+refactor_get_meteorite_count &lt;- function(dataset, year_of_interest){
+ 
+  #Stops the function if year of interest is non-numeric
+  if(!is.numeric(year_of_interest)){
+    stop(&quot;Non-numeric input in year_of_interest :(&quot;)
+  }
+  
+  #Pulls the number of meteorites from the year of interest in the dataset
+  meteorite_count &lt;- dataset %&gt;% 
+  filter(year == year_of_interest) %&gt;% 
+  tally() %&gt;% 
+  pull()
+  
+#Uses the meteorite count from above and returns the number of meteorites if there was at least one counted in that year
+if(meteorite_count &gt;= 1){
+  return(paste0(&quot;In &quot;, year_of_interest, &quot; there were &quot;, meteorite_count, &quot; meteorites&quot;))
+}
+if(meteorite_count == 0){
+  return(&quot;As far as we know, there were no meteorites that year&quot;)
+}
+}
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVmYWN0b3JfZ2V0X21ldGVvcml0ZV9jb3VudChtZXRlb3JpdGVzX2NsZWFuZWQsIFRSVUUpXG5cbmBgYCJ9 -->
+<pre class="r"><code>refactor_get_meteorite_count(meteorites_cleaned, TRUE)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gcmVmYWN0b3JfZ2V0X21ldGVvcml0ZV9jb3VudChtZXRlb3JpdGVzX2NsZWFuZWQsIFRSVUUpIDogXG4gIE5vbi1udW1lcmljIGlucHV0IGluIHllYXJfb2ZfaW50ZXJlc3QgOihcbiJ9 -->
+<pre><code>Error in refactor_get_meteorite_count(meteorites_cleaned, TRUE) : 
+  Non-numeric input in year_of_interest :(</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+</div>
+</div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIExpYnJhcmllcyAtLS0tDQoNCmBgYHtyfQ0KbGlicmFyeSh0ZXN0dGhhdCkNCmBgYA0KDQoNCiMgRGF0YSAtLS0tDQoNClJlYWRpbmcgaW4gY2xlYW5lZCBkYXRhIGZyb20gdGhlIGFzc29jaWF0ZWQgUiBzY3JpcHQgZm9yIGNsZWFuaW5nIGRhdGEuDQoNCg0KYGBge3J9DQptZXRlb3JpdGVzX2NsZWFuZWQNCmBgYA0KDQojIEV4cGxvcmF0b3J5IGFuYWx5c2lzLS0tLQ0KDQojIyAxMCBsYXJnZXN0IG1ldGVvcml0ZXMNCg0KYGBge3J9DQptZXRlb3JpdGVzX2NsZWFuZWQgJT4lIA0KICBzbGljZV9tYXgobWFzc19nLCBuID0gMTApDQpgYGANClRoZSAxMCBsYXJnZXN0IG1ldGVvcml0ZXMgd2VyZToNCjEpIEhvYmEgKDE5MjApOiA2MDAwMDAwMCBncmFtcw0KMikgQ2FwZSBZb3JrICgxODE4KTogNTgyMDAwMDAgZ3JhbXMNCjMpIENhbXBvIGRlbCBDaWVsbyAoWWVhciBtaXNzaW5nKTogNTAwMDAwMDAgZ3JhbXMNCjQpIENhbnlvbiBEaWFibG8gKDE4OTEpOiAzMDAwMDAwMCBncmFtcw0KNSkgQXJtYW50eSAoMTg5OCk6IDI4MDAwMDAwIGdyYW1zDQo2KSBHaWJlb24gKDE4MzYpOiAyNjAwMDAwMCBncmFtcw0KNykgQ2h1cGFkZXJvcyAoMTg1Mik6IDI0MzAwMDAwDQo4KSBNdW5kcmFiaWxsYSAoMTkxMSk6IDI0MDAwMDAwDQo5KSBTaWtob3RlLUFsaW4gKDE5NDcpOiAyMzAwMDAwMA0KMTApIEJhY3ViaXJpdG8gICgxODYzKTogMjIwMDAwMDANCg0KSXQgaXMgcG90ZW50aWFsbHkgb2YgaW50ZXJlc3QgdGhhdCBvbmx5IG9uZSBvZiB0aGUgdG9wIDEwIGxhcmdlc3QgbWV0ZW9yaXRlcyBpcw0KaW4gdGhlICJGZWxsIiBjYXRlZ29yeS4gQWxzbyBub25lIG9mIHRoZW0gYXJlIHZlcnkgcmVjZW50LCB0aGUgbGF0ZXN0IG1ldGVvcml0ZQ0KaW4gdGhlIHRvcCAxMCBmZWxsIGluIDE5NDcuDQoNCiMjIEZhbGxpbmcgdnMgRm91bmQgbWV0ZW9yaXRlcw0KDQpgYGB7cn0NCiNTdW1tYXJpc2VzIHRoZSBtZWFuIGZvciBmYWxsaW5nIHZzIGZvdW5kIG1ldGVvcml0ZXMNCm1ldGVvcml0ZXNfY2xlYW5lZCAlPiUgDQogIGdyb3VwX2J5KGZhbGwpICU+JSANCiAgc3VtbWFyaXNlKG1lYW4obWFzc19nKSkNCmBgYA0KDQpXaGVuIHdlIGNvbXBhcmUgdGhlIG1lYW4gbWFzcyBvZiBmYWxsaW5nIHZzIGZvdW5kIG1ldGVvcml0ZXMsIHdlIGNhbiBzZWUgdGhhdA0KdGhlIG1lYW4gbWFzcyBvZiBmb3VuZCBtZXRlb3JpdGVzIGlzIDEzMywzNTMuODkgZ3JhbXMgd2hpbGUgdGhlIG1lYW4gbWFzcyBvZiANCmZhbGxpbmcgbWV0ZW9yaXRlcyBpcyBvbmx5IDY4LDAzMi42NS4gVGhlIG1lYW4gbWFzcyBvZiBmb3VuZCBtZXRlb3JpdGVzIGlzDQpyb3VnaGx5IDk2JSBtb3JlIHRoYW4gZmFsbGluZyBtZXRlb3JpdGVzLg0KDQojIyBNZXRlb3JpdGllcyBzaW5jZSAyMDAwDQoNCmBgYHtyfQ0KbWV0ZW9yaXRlc19jbGVhbmVkICU+JSANCiAgZmlsdGVyKHllYXIgPj0gMjAwMCkgJT4lIA0KICBncm91cF9ieSh5ZWFyKSAlPiUgDQogIHRhbGx5KCkNCmBgYA0KDQpUaGUgdGFibGUgYWJvdmUgc2hvd3MgdGhlIG51bWJlciBvZiBtZXRlb3JpdGVzIGZvciB0aGUgeWVhcnMgMjAwMCAtIDIwMTMuDQpUaGUgbW9zdCBtZXRlb3JpdGVzIHdlcmUgb2JzZXJ2ZWQgaW4gMjAwMCAobiA9IDIzNSkgYW5kIHRoZSBsZWFzdCBtZXRlb3JpdGVzDQp3ZXJlIG9ic2VydmVkIGluIDIwMTMgKG4gPSAyKS4gVGhlIG51bWJlciBvZiBtZXRlb3JpdGVzIGluIDIwMTMgc3RhbmRzIG91dCBhcw0KcGFydGljdWxhcmx5IGxvdywgd2hpY2ggY291bGQgaW5kaWNhdGUgdGhhdCB0aGUgZGF0YSBmb3IgdGhpcyB5ZWFyIGlzIGluY29tcGxldGUsIHBhcnRpY3VsYXJseSBzaW5jZSB0aGlzIHdhcyB0aGUgbW9zdCByZWNlbnQgeWVhciByZWNvcmRlZCBpbiB0aGUgY2xlYW5lZCBkYXRhLg0KDQojIEZ1bmN0aW9uIGZvciBtZXRlb3JpdGUgY291bnQtLS0tDQoNClRoZSBmdW5jdGlvbiBiZWxvdyB0YWtlcyB0d28gYXJndW1lbnRzIC0gYSBkYXRhc2V0IGFuZCBhIHllYXIgb2YgaW50ZXJlc3QuIElmIHRoZXJlIHdhcyBtb3JlIHRoYW4gMSBtZXRlb3JpdGUgb2JzZXJ2ZWQgaW4gdGhhdCB5ZWFyLCBpdCB3aWxsIHJldHVybiB0aGUgbnVtYmVyIG9mIG1ldGVvcml0ZXMuIElmIHRoZXJlIGFyZW4ndCBhbnkgbWV0ZW9yaXRlcyByZWNvcmRlZCBmb3IgdGhhdCB5ZWFyLCBpdCB3aWxsIHNheSB0aGF0ICJBcyBmYXIgYXMgd2Uga25vdywgdGhlcmUgd2VyZSBubyBtZXRlb3JpdGVzIHRoYXQgeWVhciIuDQoNCmBgYHtyfQ0KZ2V0X21ldGVvcml0ZV9jb3VudCA8LSBmdW5jdGlvbihkYXRhc2V0LCB5ZWFyX29mX2ludGVyZXN0KXsNCiANCiAgI1B1bGxzIHRoZSBudW1iZXIgb2YgbWV0ZW9yaXRlcyBmcm9tIHRoZSB5ZWFyIG9mIGludGVyZXN0IGluIHRoZSBkYXRhc2V0DQogIG1ldGVvcml0ZV9jb3VudCA8LSBkYXRhc2V0ICU+JSANCiAgZmlsdGVyKHllYXIgPT0geWVhcl9vZl9pbnRlcmVzdCkgJT4lIA0KICB0YWxseSgpICU+JSANCiAgcHVsbCgpDQojVXNlcyB0aGUgbWV0ZW9yaXRlIGNvdW50IGZyb20gYWJvdmUgYW5kIHJldHVybnMgdGhlIG51bWJlciBvZiBtZXRlb3JpdGVzIGlmIHRoZXJlIHdhcyBhdCBsZWFzdCBvbmUgY291bnRlZCBpbiB0aGF0IHllYXINCmlmKG1ldGVvcml0ZV9jb3VudCA+PSAxKXsNCiAgcmV0dXJuKHBhc3RlMCgiSW4gIiwgeWVhcl9vZl9pbnRlcmVzdCwgIiB0aGVyZSB3ZXJlICIsIG1ldGVvcml0ZV9jb3VudCwgIiBtZXRlb3JpdGVzIikpDQp9DQppZihtZXRlb3JpdGVfY291bnQgPT0gMCl7DQogIHJldHVybigiQXMgZmFyIGFzIHdlIGtub3csIHRoZXJlIHdlcmUgbm8gbWV0ZW9yaXRlcyB0aGF0IHllYXIiKQ0KfQ0KfQ0KYGBgDQoNCg0KDQojIyBQbGFucyBmb3IgaW1wcm92aW5nL3Rlc3RpbmcgdGhlIGdldF9tZXRlb3JpdGUoKSBmdW5jdGlvbg0KDQpUaGUgZ2V0X21ldGVvcml0ZSgpIGZ1bmN0aW9uIGNvdWxkIGJlIGltcHJvdmVkIGluIHRoZSBmb2xsb3dpbmcgd2F5czoNCg0KMSkgVGhlIGZ1bmN0aW9uIGNvdWxkIGFsc28gaWRlbnRpZnkgdGhlIGVhcmxpZXN0IGFuZCBsYXRlc3QgZGF0ZSB3aGVyZSBhIG1ldGVvciB3YXMgb2JzZXJ2ZWQgaW4gdGhlIGRhdGFzZXQgYW5kIHJldHVybiBhIHdhcm5pbmcgdGhhdCAidGhpcyB5ZWFyIGlzIG91dCBvZiB0aGUgYm91bmRzIG9mIHRoZSBzcGVjaWZpZWQgZGF0YXNldCIgaWYgYSB5ZWFyIGJlZm9yZSBvciBhZnRlciB0aGUgZWFybGllc3QgYW5kIGxhdGVzdCBkYXRlIGlzIGVudGVyZWQuIFRoaXMgY291bGQgYmUgYWRkZWQgYXQgdGhlIGJlZ2lubmluZyBvZiB0aGUgZGF0YXNldA0KDQoyKSBUaGUgZnVuY3Rpb24gc2hvdWxkIHN0b3AgaWYgbm9uLW51bWVyaWMgZGF0YSBpcyBlbnRlcmVkIGluIHRoZSB5ZWFyX29mX2ludGVyZXN0IHZhcmlhYmxlLiBUaGlzIGNvdWxkIGJlIGFkZGVkIGF0IHRoZSBiZWdpbm5pbmcgb2YgdGhlIGZ1bmN0aW9uLg0KDQozKSBUaGUgZnVuY3Rpb24gc2hvdWxkbid0IGJlIHVzZWQgb24gYSBkYXRhc2V0IHRoYXQgaXNuJ3QgYWJvdXQgbWV0ZW9yaXRlcy4gUmlnaHQgbm93IGl0IHdpbGwgd29yayBvbiBhbnkgZGF0YXNldCB3aXRoIHRoZSB2YXJpYWJsZSAieWVhciIgYmVjYXVzZSBhbGwgaXQgZG9lcyBpcyB0YWxseSB0aGUgbnVtYmVyIG9mIG9ic2VydmF0aW9ucyBpbiB0aGF0IHllYXIuIEl0IGlzIHBvc3NpYmxlIHRoYXQgd2UgY291bGQgc3BlY2lmeSBhIGRlZmF1bHQgdmFsdWUgZm9yIGRhdGFzZXQgaW4gdGhlIGZ1bmN0aW9uLiBSaWdodCBub3cgdGhlIFIgc2NyaXB0IHRoYXQgY2xlYW5zIG1ldGVvcml0ZSBkYXRhIGFzc2lnbnMgdGhlIG5hbWUgIm1ldGVvcml0ZXNfY2xlYW5lZCIgdG8gdGhlIHJlc3VsdGluZyBkYXRhc2V0IC0gcGVyaGFwcyAibWV0ZW9yaXRlc19jbGVhbmVkIiBjb3VsZCBiZSB0aGUgZGVmYXVsdCB2YWx1ZSBmb3IgZGF0YXNldCBpbiB0aGUgZnVuY3Rpb24/DQoNClRlc3QgcGxhbnMgZm9yIHRoZSBmdW5jdGlvbg0KMSkgQSB5ZWFyIHdoZXJlIDEgb3IgbW9yZSBtZXRlb3JpdGVzIHdlcmUgb2JzZXJ2ZWQgc2hvdWxkIHJldHVybiBhbiBhcHByb3ByaWF0ZSBtZXRlb3JpdGUgY291bnQuIEV4YW1wbGUgaW5wdXQ6IDIwMDAuIEV4cGVjdGVkIG91dHB1dDogSW4gMjAwMCwgdGhlcmUgd2VyZSAyMzUgbWV0ZW9yaXRlcy4NCjIpIEEgeWVhciB0aGF0IGlzIG5vdCBpbiB0aGUgZGF0YXNldCBzaG91bGQgcmV0dXJuICJBcyBmYXIgYXMgd2Uga25vdywgdGhlcmUgd2VyZSBubyBtZXRlb3JpdGVzIHRoYXQgeWVhciIuIEV4YW1wbGUgaW5wdXQ6IDE1OTkuIEV4cGVjdGVkIG91dHB1dDogIkFzIGZhciBhcyB3ZSBrbm93LCB0aGVyZSB3ZXJlIG5vIG1ldGVvcml0ZXMgdGhhdCB5ZWFyIg0KMykgTm9uLW51bWVyaWMgaW5wdXQgc2hvdWxkIHJldHVybiBhbiBlcnJvci4gRXhhbXBsZSBpbnB1dDogInllYXIiLCBUUlVFLiBFeHBlY3RlZCBvdXRwdXQ6IGFuIGVycm9yLg0KDQojIyBUZXN0aW5nIHRoZSBmdW5jdGlvbg0KDQpgYGB7cn0NCg0KdGVzdF90aGF0KCJOb24tbnVtZXJpYyBpbnB1dCByZXR1cm5zIGFuIGVycm9yIiwgew0KICBleHBlY3RfZXJyb3IoZ2V0X21ldGVvcml0ZV9jb3VudChUUlVFKSkNCiAgZXhwZWN0X2Vycm9yKGdldF9tZXRlb3JpdGVfY291bnQoInllYXIiKSkNCn0pDQoNCmBgYA0KVGhlIHRlc3Qgd2FzIHBhc3NlZCwgc28gZW50ZXJpbmcgbG9naWNhbCBhbmQgY2hhcmFjdGVyIGlucHV0IGludG8gdGhlIGZ1bmN0aW9uIGRvZXMgcmV0dXJuIGFuIGVycm9yLCBidXQgd2Ugc2hvdWxkIGFsc28gY2hlY2sgdG8gc2VlIHdoYXQga2luZCBvZiBlcnJvciBpcyByZXR1cm5lZC4NCg0KYGBge3J9DQpnZXRfbWV0ZW9yaXRlX2NvdW50KCJ5ZWFyIikNCmdldF9tZXRlb3JpdGVfY291bnQoVFJVRSkNCmBgYA0KVGhpcyBlcnJvciBpcyBmYWlybHkgaGVscGZ1bCwgYnV0IGl0IGNvdWxkIGJlIG1vcmUgZXhwbGljaXQgd2hhdCB3ZW50IHdyb25nIGlmIHdlIHVzZWQgdGhlIHN0b3AoKSBmdW5jdGlvbiB0byBzcGVjaWZ5IHRoYXQgdGhlIHllYXJfb2ZfaW50ZXJlc3QgaW5wdXQgd2FzIGNhdXNpbmcgdGhlIGVycm9yLg0KDQojIyBJbXByb3ZpbmcgdGhlIGZ1bmN0aW9uDQoNCkFkZGluZyBhIHN0b3AoKSBmdW5jdGlvbiBhdCB0aGUgYmVnaW5uaW5nIHRvIHNwZWNpZmljYWxseSBpZGVudGlmeSBlcnJvcnMgd2hlcmUgdGhlIGlucHV0IGluIHllYXJfb2ZfaW50ZXJlc3QgaXMgbm9uLW51bWVyaWMgd2lsbCBpbXByb3ZlIHRoZSBmdW5jdGlvbi4NCg0KYGBge3J9DQoNCnJlZmFjdG9yX2dldF9tZXRlb3JpdGVfY291bnQgPC0gZnVuY3Rpb24oZGF0YXNldCwgeWVhcl9vZl9pbnRlcmVzdCl7DQogDQogICNTdG9wcyB0aGUgZnVuY3Rpb24gaWYgeWVhciBvZiBpbnRlcmVzdCBpcyBub24tbnVtZXJpYw0KICBpZighaXMubnVtZXJpYyh5ZWFyX29mX2ludGVyZXN0KSl7DQogICAgc3RvcCgiTm9uLW51bWVyaWMgaW5wdXQgaW4geWVhcl9vZl9pbnRlcmVzdCA6KCIpDQogIH0NCiAgDQogICNQdWxscyB0aGUgbnVtYmVyIG9mIG1ldGVvcml0ZXMgZnJvbSB0aGUgeWVhciBvZiBpbnRlcmVzdCBpbiB0aGUgZGF0YXNldA0KICBtZXRlb3JpdGVfY291bnQgPC0gZGF0YXNldCAlPiUgDQogIGZpbHRlcih5ZWFyID09IHllYXJfb2ZfaW50ZXJlc3QpICU+JSANCiAgdGFsbHkoKSAlPiUgDQogIHB1bGwoKQ0KICANCiNVc2VzIHRoZSBtZXRlb3JpdGUgY291bnQgZnJvbSBhYm92ZSBhbmQgcmV0dXJucyB0aGUgbnVtYmVyIG9mIG1ldGVvcml0ZXMgaWYgdGhlcmUgd2FzIGF0IGxlYXN0IG9uZSBjb3VudGVkIGluIHRoYXQgeWVhcg0KaWYobWV0ZW9yaXRlX2NvdW50ID49IDEpew0KICByZXR1cm4ocGFzdGUwKCJJbiAiLCB5ZWFyX29mX2ludGVyZXN0LCAiIHRoZXJlIHdlcmUgIiwgbWV0ZW9yaXRlX2NvdW50LCAiIG1ldGVvcml0ZXMiKSkNCn0NCmlmKG1ldGVvcml0ZV9jb3VudCA9PSAwKXsNCiAgcmV0dXJuKCJBcyBmYXIgYXMgd2Uga25vdywgdGhlcmUgd2VyZSBubyBtZXRlb3JpdGVzIHRoYXQgeWVhciIpDQp9DQp9DQoNCmBgYA0KDQoNCg0KYGBge3J9DQojVGVzdGluZyB0aGF0IFIgcmV0dXJucyB0aGUgY29ycmVjdCBlcnJvciBhcyBzcGVjaWZpZWQgaW4gdGhlIHN0b3AoKSBmdW5jdGlvbg0KcmVmYWN0b3JfZ2V0X21ldGVvcml0ZV9jb3VudChtZXRlb3JpdGVzX2NsZWFuZWQsICJ5ZWFyIikNCnJlZmFjdG9yX2dldF9tZXRlb3JpdGVfY291bnQobWV0ZW9yaXRlc19jbGVhbmVkLCBUUlVFKQ0KYGBgDQogDQog</div>
 
 
 

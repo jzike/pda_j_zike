@@ -3,3 +3,167 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+# Libraries ----
+
+```{r}
+library(testthat)
+```
+
+
+# Data ----
+
+Reading in cleaned data from the associated R script for cleaning data.
+
+
+```{r}
+meteorites_cleaned
+```
+
+# Exploratory analysis----
+
+## 10 largest meteorites
+
+```{r}
+meteorites_cleaned %>% 
+  slice_max(mass_g, n = 10)
+```
+The 10 largest meteorites were:
+1) Hoba (1920): 60000000 grams
+2) Cape York (1818): 58200000 grams
+3) Campo del Cielo (Year missing): 50000000 grams
+4) Canyon Diablo (1891): 30000000 grams
+5) Armanty (1898): 28000000 grams
+6) Gibeon (1836): 26000000 grams
+7) Chupaderos (1852): 24300000
+8) Mundrabilla (1911): 24000000
+9) Sikhote-Alin (1947): 23000000
+10) Bacubirito  (1863): 22000000
+
+It is potentially of interest that only one of the top 10 largest meteorites is
+in the "Fell" category. Also none of them are very recent, the latest meteorite
+in the top 10 fell in 1947.
+
+## Falling vs Found meteorites
+
+```{r}
+#Summarises the mean for falling vs found meteorites
+meteorites_cleaned %>% 
+  group_by(fall) %>% 
+  summarise(mean(mass_g))
+```
+
+When we compare the mean mass of falling vs found meteorites, we can see that
+the mean mass of found meteorites is 133,353.89 grams while the mean mass of 
+falling meteorites is only 68,032.65. The mean mass of found meteorites is
+roughly 96% more than falling meteorites.
+
+## Meteorities since 2000
+
+```{r}
+meteorites_cleaned %>% 
+  filter(year >= 2000) %>% 
+  group_by(year) %>% 
+  tally()
+```
+
+The table above shows the number of meteorites for the years 2000 - 2013.
+The most meteorites were observed in 2000 (n = 235) and the least meteorites
+were observed in 2013 (n = 2). The number of meteorites in 2013 stands out as
+particularly low, which could indicate that the data for this year is incomplete, particularly since this was the most recent year recorded in the cleaned data.
+
+# Function for meteorite count----
+
+The function below takes two arguments - a dataset and a year of interest. If there was more than 1 meteorite observed in that year, it will return the number of meteorites. If there aren't any meteorites recorded for that year, it will say that "As far as we know, there were no meteorites that year".
+
+```{r}
+get_meteorite_count <- function(dataset, year_of_interest){
+ 
+  #Pulls the number of meteorites from the year of interest in the dataset
+  meteorite_count <- dataset %>% 
+  filter(year == year_of_interest) %>% 
+  tally() %>% 
+  pull()
+#Uses the meteorite count from above and returns the number of meteorites if there was at least one counted in that year
+if(meteorite_count >= 1){
+  return(paste0("In ", year_of_interest, " there were ", meteorite_count, " meteorites"))
+}
+if(meteorite_count == 0){
+  return("As far as we know, there were no meteorites that year")
+}
+}
+```
+
+
+
+## Plans for improving/testing the get_meteorite() function
+
+The get_meteorite() function could be improved in the following ways:
+
+1) The function could also identify the earliest and latest date where a meteor was observed in the dataset and return a warning that "this year is out of the bounds of the specified dataset" if a year before or after the earliest and latest date is entered. This could be added at the beginning of the dataset
+
+2) The function should stop if non-numeric data is entered in the year_of_interest variable. This could be added at the beginning of the function.
+
+3) The function shouldn't be used on a dataset that isn't about meteorites. Right now it will work on any dataset with the variable "year" because all it does is tally the number of observations in that year. It is possible that we could specify a default value for dataset in the function. Right now the R script that cleans meteorite data assigns the name "meteorites_cleaned" to the resulting dataset - perhaps "meteorites_cleaned" could be the default value for dataset in the function?
+
+Test plans for the function
+1) A year where 1 or more meteorites were observed should return an appropriate meteorite count. Example input: 2000. Expected output: In 2000, there were 235 meteorites.
+2) A year that is not in the dataset should return "As far as we know, there were no meteorites that year". Example input: 1599. Expected output: "As far as we know, there were no meteorites that year"
+3) Non-numeric input should return an error. Example input: "year", TRUE. Expected output: an error.
+
+## Testing the function
+
+```{r}
+
+test_that("Non-numeric input returns an error", {
+  expect_error(get_meteorite_count(TRUE))
+  expect_error(get_meteorite_count("year"))
+})
+
+```
+The test was passed, so entering logical and character input into the function does return an error, but we should also check to see what kind of error is returned.
+
+```{r}
+get_meteorite_count("year")
+get_meteorite_count(TRUE)
+```
+This error is fairly helpful, but it could be more explicit what went wrong if we used the stop() function to specify that the year_of_interest input was causing the error.
+
+## Improving the function
+
+Adding a stop() function at the beginning to specifically identify errors where the input in year_of_interest is non-numeric will improve the function.
+
+```{r}
+
+refactor_get_meteorite_count <- function(dataset, year_of_interest){
+ 
+  #Stops the function if year of interest is non-numeric
+  if(!is.numeric(year_of_interest)){
+    stop("Non-numeric input in year_of_interest :(")
+  }
+  
+  #Pulls the number of meteorites from the year of interest in the dataset
+  meteorite_count <- dataset %>% 
+  filter(year == year_of_interest) %>% 
+  tally() %>% 
+  pull()
+  
+#Uses the meteorite count from above and returns the number of meteorites if there was at least one counted in that year
+if(meteorite_count >= 1){
+  return(paste0("In ", year_of_interest, " there were ", meteorite_count, " meteorites"))
+}
+if(meteorite_count == 0){
+  return("As far as we know, there were no meteorites that year")
+}
+}
+
+```
+
+
+
+```{r}
+#Testing that R returns the correct error as specified in the stop() function
+refactor_get_meteorite_count(meteorites_cleaned, "year")
+refactor_get_meteorite_count(meteorites_cleaned, TRUE)
+```
+ 
+ 
