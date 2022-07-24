@@ -44,7 +44,9 @@ meteorites_cleaned <- meteorites_cleaned %>%
 # Check that data is valid ----
 
 meteorites_cleaned %>% 
+  #Verify that all expected column names are present
   verify(has_all_names("id", "name", "mass_g", "fall", "year", "latitude", "longitude")) %>% 
+  #Verify that all latitude and longitude values are valid
   verify(latitude >= -90 & latitude <= 90) %>% 
   verify(longitude >= -180 & longitude <= 180)
 
