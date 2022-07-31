@@ -6,6 +6,8 @@ output: html_notebook
 # Libraries ----
 
 ```{r}
+library(tidyverse)
+library(assertr)
 library(testthat)
 ```
 
@@ -16,7 +18,8 @@ Reading in cleaned data from the associated R script for cleaning data.
 
 
 ```{r}
-meteorites_cleaned
+here::here()
+meteorites_cleaned <- read_csv(here::here("data/meteorites_cleaned.csv"))
 ```
 
 # Exploratory analysis----
@@ -165,5 +168,46 @@ if(meteorite_count == 0){
 refactor_get_meteorite_count(meteorites_cleaned, "year")
 refactor_get_meteorite_count(meteorites_cleaned, TRUE)
 ```
+# Join with meteorite_class
+## Libraries
  
+```{r}
+library(RPostgres)
+source("login.R")
+```
  
+## Connecting to the database
+
+```{r}
+db_connection = dbConnect(
+  drv = Postgres(),
+  host = meteor_host,
+  port = meteor_port,
+  dbname = meteor_database,
+  user = meteor_username,
+  password = meteor_password,
+  bigint = "numeric"
+  
+)
+rm(meteor_username, meteor_password)
+```
+
+## Read in tables
+
+```{r}
+dbListTables(conn = db_connection)
+
+dbListFields(conn = db_connection, name = "meteorite_class")
+
+meteorite_class <- dbGetQuery(conn = db_connection, statement = 
+                                "SELECT * FROM meteorite_class")
+
+dbDisconnect(conn = db_connection)
+```
+
+## Join tables
+
+```{r}
+meteorites_joined <- left_join(meteorites_cleaned, meteorite_class, "id") 
+```
+

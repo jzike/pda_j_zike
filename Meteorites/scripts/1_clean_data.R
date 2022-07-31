@@ -50,3 +50,5 @@ meteorites_cleaned %>%
   verify(latitude >= -90 & latitude <= 90) %>% 
   verify(longitude >= -180 & longitude <= 180)
 
+# Write clean data to a file
+write_csv(meteorites_cleaned, "data/meteorites_cleaned.csv")
