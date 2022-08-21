@@ -16,10 +16,11 @@ library(testthat)
 
 Reading in cleaned data from the associated R script for cleaning data.
 
-
+3.1 Writing function/program to process data from an external file
 ```{r}
 here::here()
 meteorites_cleaned <- read_csv(here::here("data/meteorites_cleaned.csv"))
+meteorites_cleaned
 ```
 
 # Exploratory analysis----
@@ -48,6 +49,7 @@ in the top 10 fell in 1947.
 
 ## Falling vs Found meteorites
 
+3.5. Writing function/program to perform statistical analysis
 ```{r}
 #Summarises the mean for falling vs found meteorites
 meteorites_cleaned %>% 
@@ -108,13 +110,14 @@ The get_meteorite() function could be improved in the following ways:
 
 3) The function shouldn't be used on a dataset that isn't about meteorites. Right now it will work on any dataset with the variable "year" because all it does is tally the number of observations in that year. It is possible that we could specify a default value for dataset in the function. Right now the R script that cleans meteorite data assigns the name "meteorites_cleaned" to the resulting dataset - perhaps "meteorites_cleaned" could be the default value for dataset in the function?
 
+4.1 Test plans
 Test plans for the function
 1) A year where 1 or more meteorites were observed should return an appropriate meteorite count. Example input: 2000. Expected output: In 2000, there were 235 meteorites.
 2) A year that is not in the dataset should return "As far as we know, there were no meteorites that year". Example input: 1599. Expected output: "As far as we know, there were no meteorites that year"
 3) Non-numeric input should return an error. Example input: "year", TRUE. Expected output: an error.
 
 ## Testing the function
-
+4.6 Performing test
 ```{r}
 
 test_that("Non-numeric input returns an error", {
@@ -131,6 +134,7 @@ get_meteorite_count(TRUE)
 ```
 This error is fairly helpful, but it could be more explicit what went wrong if we used the stop() function to specify that the year_of_interest input was causing the error.
 
+4.6 Revising code
 ## Improving the function
 
 Adding a stop() function at the beginning to specifically identify errors where the input in year_of_interest is non-numeric will improve the function.
@@ -175,7 +179,7 @@ refactor_get_meteorite_count(meteorites_cleaned, TRUE)
 library(RPostgres)
 source("login.R")
 ```
- 
+3.2 Writing function/program to process data from a database 
 ## Connecting to the database
 
 ```{r}
@@ -193,6 +197,7 @@ rm(meteor_username, meteor_password)
 ```
 
 ## Read in tables
+Working with data - 3.2 - Data structures including tables and databases
 
 ```{r}
 dbListTables(conn = db_connection)
@@ -209,5 +214,24 @@ dbDisconnect(conn = db_connection)
 
 ```{r}
 meteorites_joined <- left_join(meteorites_cleaned, meteorite_class, "id") 
+meteorites_joined
 ```
+
+
+## Visualise the data
+3.6 Writing function/program to create visualisations
+```{r}
+meteorites_cleaned %>% 
+  ggplot(aes(x = mass_g, y = fall)) +
+  geom_boxplot(aes(fill = fall), outlier.colour = "red") +
+  scale_x_continuous(trans = "log10", name = "log(mass)", labels = scales::comma) +
+  geom_jitter(width = 0.2, colour = "grey60", alpha = 0.5) +
+  ggtitle("Mass in grams for found vs fallen meteorites")
+```
+The box plot above shows the mass of found versus fallen meteorites with the individual meteorite observations overlayed on the boxplots to better show where observations were concentrated. The red points are considered outliers and represent very heavy meteorites compared with the rest of the observations for that group. 
+
+This is interesting because in the analysis above, I found that the mean mass for found meteorites was 133,353.89 grams while the mean mass of falling meteorites was 68,032.65. We can see from the box plot that the very heavy outliers in both of the groups have impacted the mean mass by pulling the value much higher than the median. 
+
+This has also had an effect on our comparison in the exploratory analysis section above as the median mass for falling meteorites is actually higher than the median for found meteorites. However, because there are more observations for found meteorites, there are also more very heavy outliers that drastically increase the mean value for found meteorites. 
+
 

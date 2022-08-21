@@ -1,0 +1,51 @@
+R Notebook
+================
+
+# Meteorites Project
+
+An R project analysing observations of meteorites using data from NASA
+
+# Data folder
+
+Contains the data for the project in CSV format
+
+# Scripts folder
+
+Contains the scripts for the project, which are numbered in the order
+that they should be used.
+
+## Clean data R script
+
+### Name: 1_clean_data.R
+
+### File description: This script cleans meteorite datasets and verifies that they are in the correct format
+
+### Code description:
+
+1)  Cleans names
+2)  Separate the latitude and longitude variables and transforms them
+    into numeric variables
+3)  NAs in latitude and longitude are replaced by “0”
+4)  Meteorites that are under 1000 grams are stripped from the cleaned
+    dataset
+5)  The dataset is organised by year
+6)  Assertive programming checks that the variable names are all present
+    and that latitude and longitude values are valid.
+
+## Analysis and interpretation R notebook
+
+### Name: 2_analysis_and_interpretation.Rmd
+
+### File description: Exploratory analysis was carried out on the data and a function was written to get meteorite counts for a given year.
+
+### Code description:
+
+1)  Top 10 heaviest meteorites
+2)  Comparison of mass of fallen vs found meteorites
+3)  Counts for meteorites since 2000
+4)  Function for getting meteorite count - get_meteorite_count - which
+    takes two arguments (dataset, year_of_interest)
+5)  Ideas for improving and testing the function
+6)  Improved version of the function - refactor_get_meteorite_count -
+    which stops the function is non-numeric input is detected in
+    year_of_interest

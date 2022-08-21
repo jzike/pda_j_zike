@@ -15,6 +15,8 @@ meteorites <- read_csv("data/meteorite_landings.csv")
 meteorites_cleaned <- meteorites %>% 
 janitor::clean_names()
 
+#3.3. Writing a function/program to clean data
+
 # Split latitude and longitude into separate variables and convert to numeric
 meteorites_cleaned <- meteorites_cleaned %>% 
   #Split latitude and longitude into separate columns
@@ -25,7 +27,9 @@ meteorites_cleaned <- meteorites_cleaned %>%
   #Convert latitude and longitude into numeric values
   mutate(latitude = as.numeric(unlist(latitude))) %>% 
   mutate(longitude = as.numeric(unlist(longitude)))
+meteorites_cleaned
 
+#3.4 Writing function/program  to wrangle data
 ## Missing values ----
 
 # Replaces NAs in lat and long variables with 0
@@ -40,6 +44,7 @@ meteorites_cleaned <- meteorites_cleaned %>%
   filter(mass_g >= 1000) %>% 
   #Arranges by year
   arrange(year)
+meteorites_cleaned
 
 # Check that data is valid ----
 
