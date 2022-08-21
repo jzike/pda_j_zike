@@ -1,0 +1,181 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+# Libraries
+```{r}
+library(tidyverse)
+library(infer)
+library(janitor)
+library(e1071)
+library(palmerpenguins)
+```
+
+# Data
+```{r}
+penguins <- palmerpenguins::penguins
+```
+
+# Question
+
+We are interested in how bill length differ between the three species of penguin (Adelie, Chinstrap & Gentoo) in this dataset.
+
+
+# 1. Exploratory analysis
+
+### PDA outcome: 4.1 Exploratory data analysis (in part, see section 3 for second part)
+
+Explore the dataset using visualisations and keep in mind the question you're trying to answer above.
+Write a short summary of the results.
+
+I think that the best visualisation for seeing the differences here is going to be a box plot where we can look at the data from all three species in one plot. I've also plotted histograms for the data.
+
+```{r}
+#construct a box plot to compare bill lengths by species
+penguins %>% 
+  ggplot(aes(x = bill_length_mm,
+             y = species)) +
+  geom_boxplot(outlier.color = "red") +
+  geom_jitter() +
+  labs(x = "Bill length in millimetres",
+       y = "Species of penguin") +
+  ggtitle("Comparison of bill lengths for three penguin species\n")
+```
+
+```{r}
+#Construct histograms for bill_length for each penguin species
+penguins %>% 
+  ggplot(aes(x = bill_length_mm)) +
+  geom_histogram(col = "white") +
+  facet_wrap(vars(species)) +
+  labs(x = "Bill length in millimetres",
+       y = "Count") +
+  ggtitle("Comparison of bill lengths for three penguin species\n")
+```
+
+
+
+The box plot above shows that Adelie penguins tend to have shorter bill lengths on average than both Gentoo and Chinstrap penguins. This difference is likely to be significantly different since you can see that the interquartile range (IQR) for Adelie penguins doesn't overlap with the IQR for Gentoo or Chinstrap penguins. Indeed, it looks like around 75% of the data (25% in lower whisker and 50% in IQR) for Adelie penguins' beak lengths doesn't overlap at all with the other two groups.
+
+The difference between Gentoo and Chinstrap penguins is more subtle. The median bill length for Chinstrap penguins is higher than the median for Gentoo penguins. There are a few outliers in the Gentoo penguins group with very long bills as well. Despite this, the distribution for the Gentoo penguins dataset looks more symmetrical than the distribution for the Chinstrap penguins. The Chinstrap penguin dataset looks like it might be multimodal since it looks like there is a cluster of penguins with shorter beaks just below the lower quartile and another cluster between the mean and upper quartile. The histogram confirms that this is definitely a multimodal distribution.
+
+
+
+# 2. Summary statistics
+
+### PDA outcome: 4.4 Summary statistics including measures of centrality, spread and skewness
+
+Calculate the following summary statistics to describe bill length for each species:
+
+- measures of centrality (mean & median)
+- spread (standard deviation)
+- skewness (you can use the skewness() function from the e1071 package)
+
+Write a short summary of the results.
+
+```{r}
+#get mean by species
+penguins %>% 
+  group_by(species) %>% 
+  drop_na(bill_length_mm) %>% 
+  summarise(mean = mean(bill_length_mm))
+
+#get median by species
+penguins %>% 
+  group_by(species) %>% 
+  drop_na(bill_length_mm) %>% 
+  summarise(median = median(bill_length_mm))
+
+#get standard deviation by species
+penguins %>% 
+  group_by(species) %>% 
+  drop_na(bill_length_mm) %>% 
+  summarise(standard_deviation = sd(bill_length_mm))
+
+#get skewness for each of the groups
+penguins %>% 
+  group_by(species) %>% 
+  drop_na(bill_length_mm) %>% 
+  summarise(skewness = skewness(bill_length_mm))
+
+```
+
+The tables above show the means, medians, standard deviations and measures of skewness for the bill lengths of the three different penguin species. Adelie penguins have a shortest mean bill length (38.79mm), followed by Gentoo penguins (47.50mm) and Chinstrap penguins (48.83mm). The median bill lengths are relatively similar to the means for all the penguin species except for Chinstrap penguins, where the median is higher than the mean. As we know from the box plots above, this is due to the multimodality of the Chinstrap penguin distribution where there are different clusters of values which don't impact the mean, but do impact the median.
+
+The standard deviation for Adelie penguins is 2.66, which is less than the standard deviations for Chinstrap (3.34) and Gentoo (3.08) penguins, showing that the Chinstrap and Gentoo penguin datasets are more spread out than the Adelie penguin dataset. 
+
+For skewness, values that are closer to 0 indicate a distribution that is more symmetrical and thus more likely to be normally distributed. We can see that the Adelie penguins dataset shows a slight positive skew (tail to right) and the Chinstrap penguins dataset shows a very slight negative skew (tail to left). The Gentoo penguin dataset shows a positive skew that is a bit higher than other others. We could see in the histogram and box plot that the Gentoo penguin dataset has some observations of penguins with very long beaks that introduce a positive skew to the dataset. However, none of these have a skew higher than one, so they aren't significantly skewed.
+
+
+# 3.  Hypothesis test and probability
+
+### PDA outcomes: 
+
+- 4.1 Targeted data analysis (hypothesis testing)
+
+- 4.3. Probability and probability distributions
+
+
+Perform a suitable hypothesis test to check whether the mean bill length of Gentoo is significantly longer than the mean bill length of Adelie.
+
+Visualise the p-value on the null distribution.
+
+Write an interpretation of your findings.
+
+
+Hypotheses:
+
+- H0 - bill_length(Gentoo) <= bill_length(Adelie)
+
+- H1 - bill_length(Gentoo) > bill_length(Adelie)
+
+Alpha level: 0.05 (95% CI)
+
+The appropriate test is a two-sample independent hypothesis test since Adelie and Gentoo penguins are two distinct species with no overlap (i.e. penguins aren't classed as both Adelie and Gentoo)
+
+```{r}
+#generate the null distribution
+null_distribution <- penguins %>% 
+  filter(species == "Gentoo" | species == "Adelie") %>% 
+  specify(bill_length_mm ~ species) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 5000, type = "permute") %>% 
+  calculate(stat = "diff in means", order = c("Gentoo", "Adelie"))
+```
+
+```{r}
+#calculate the observed stat
+observed_stat <- penguins %>% 
+  filter(species == "Gentoo" | species == "Adelie") %>% 
+  specify(bill_length_mm ~ species) %>% 
+  calculate(stat = "diff in means", order = c("Gentoo", "Adelie"))
+```
+
+```{r}
+#visualise the observed stat on the null distribution and shade to the right since we're interested in positive differences between Gentoo and Adelie penguins
+null_distribution %>% 
+  visualise() +
+  shade_p_value(obs_stat = observed_stat, direction = "right")
+```
+
+We can tell this is significant from looking at the distribution, but we should get the p-value anyway.
+
+```{r}
+#get the p value
+p_value <- null_distribution %>% 
+  get_p_value(obs_stat = observed_stat, direction = "right")
+
+p_value
+```
+
+
+The p value indicates how likely it would be to see a certain observed statistic given that the null hypothesis was true. They relate to probability in that a p value of 1 would mean that we would definitely see that observed statistic given that the null hypothesis was true. Hypothetically, a p value of 0 would mean that it would be impossible to see that observed statistic given that the null hypothesis was true, but there are no p values of 0, because even if it is extremely unlikely, it's still technically possible to observe something by chance. Nevertheless, p values that are very low indicate that it would be strange to see the observed statistic by chance given that the null hypothesis was true.
+
+The alpha level I chose here (0.05) corresponds with a confidence interval of 95%. This means we can be 95% sure that the population value of our statistic of interest lies within this interval. Values that fall outside of this interval would return a p value of less than 0.05, allowing us to reject that null hypothesis since there would be evidence that the alternative hypothesis was true. However, we would reject the null hypothesis wrongly around 1 time in 20 (5% of the time), producing a type 1 error.
+
+The null distribution above assumes that the difference in bill lengths between Gentoo and Adelie penguins is 0, which is why the probablity distribution is centred on 0. As the differences get further away from 0, it becomes less likely that the difference would occur by chance given that the null hypothesis was true. The observed difference in mean bill lengths between Gentoo and Adelie penguins was 8.7 and we can see that this value is very unlikely to occur by chance if the true difference is actually 0.
+
+The p value here is less than 0.001, which is less than our defined alpha level of 0.05. This means that there is evidence that the bill lengths of Gentoo penguins are significantly longer than that of Adelie penguins and we can reject the null hypothesis in this case.
