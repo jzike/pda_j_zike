@@ -1,0 +1,48 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# 1. Documentation
+
+## Domain knowledge
+
+Citi Bike is a bicycle sharing system in New York City and currently the largest cycle sharing network in the United states. These public transportation systems are popular in urban areas and offer shared use bicycles that individuals can rent for short periods of time (Midgley, 2011). Since the bicycles are maintained by the rental company, this makes them an attractive option for people who want access to bicycles without the costs and responsibilities of owning a bicycle.
+
+The Citi Bike program was launched in 2013 and now incorporates 20,000 bicycles, which can be rented at over 1,300 stations across the New York city metropolitan area. They can be hired at one self-serve bike station and returned at another, which makes them ideal for one-way trips in places like New York City where parking is often difficult and expensive. Additionally, cycling takes away the hassle of waiting for buses and trains and any transfers needed to get to the final destination.
+
+Citi Bike offers both an annual subscription for frequent users as well as the option to buy a short-term pass through the app for visitors to the city. It is a healthy and affordable way to commute to work or explore the city.
+
+## Business requirements
+
+This report aims to explore and better understand patterns in bike hires in order to make recommendations to increase bike hires and identify any potential gaps in the market or potential challenges that need to be taken into account.
+
+The first step is to find patterns that are of interest in the business brief. These are:
+  - Patterns over time (e.g. across the year, month, week, time of the day)
+  - Patterns across different demographics (e.g. gender, age, type of trip)
+  - Geographical patterns in usage
+  
+These patterns will be explored by looking at counts (e.g. number of bike hires) and averages (e.g. mean/median trip durations) for the variables of interest above. These will be visually represented using appropriate visualisations. The visualisations will be interpreted and any implications for the business will be discussed.
+
+## Business processes and data flow
+
+The graphic below shows the process by which data was collected to construct the nyc_bikes dataset.
+
+```{r}
+knitr::include_graphics("data_collection.jpg")
+```
+
+## Data visualisation as a tool for decision-making
+
+This report will be useful for Citi Bikes because identifying patterns in usage can help to make better business decisions. This could include: identifying areas where market research is needed to increase use, finding the best days/times to maintain the bikes, appropriately allocating bikes (e.g. to the most popular stations/at the most used times), and targeting advertising appropriately.
+
+Identifying patterns over time can help to identify potential dips in the usage of the bikes. For example, if there is a season where usage tends to drop, market research into why customers aren't using the bikes during this season could help to increase use. 
+
+Additionally, understanding which days and times have low usage is invaluable in making decisions about what days and times are best for maintaining the bikes as we don't want bikes to be unavailable on days/times where bikes are in high demand.
+
+Understanding the patterns in usage by different demographics could help to identify groups we aren't reaching and who might be targeted better through more appropriate advertising.
+
+Investigating geographical patterns of usage could help to understand which stations are most frequently used, which is useful in appropriately allocating bikes to ensure that frequently used stations have enough bikes to keep up with demand.
+
+
+## Data types
