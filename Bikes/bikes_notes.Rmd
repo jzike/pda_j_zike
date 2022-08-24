@@ -3,33 +3,38 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-## Libraries
+# Libraries
 ```{r}
 library(tidyverse)
 library(tsibbledata)
 library(lubridate)
 library(tsibble)
+library(hms)
+library(leaflet)
+library(slider)
 ```
-# Documentation
-
-
-
-
-## Questions
+# Questions and notes
 
 - What is the pattern of bike hires over time (e.g. within a year, month, week, or day)?
+    -Explore using plots with time series data and     bike hire counts/use duration in mins
 
 - Do bike hire patterns differ between bike rider demographics? (e.g. gender, type of trip, age)?
+    -Gender and bike hire counts (include type of        trip) - stacked bar graph
+    -Gender and use duration in mins(include type        of trip) - box plot
+    -Age and use duration in mins - scatter plot
+    -Age and bike hire counts - need age ranges for     this - stacked bar graph (with type of trip)
 
 - What is the geographical spread of the start points of bike hires?
-
-- Optional: Can you predict bike use over the next couple of months? (This is based on the flipped time series forecasting lesson)
+    -Leaflet plot (can we maybe make the stations        vary in size by the number of bike hires?)
 
 - Any other insights?
 
-## Problems discovered
+
+## Problems discovered during exploration
 
 - Some very large values in use_duration_mins representing use over multiple days
+- The dataset is biased because the sample is only drawn from Jersey City
+-Users could probably be identified from this data and their address (either home or place of work) could be approximated by the start/end points of their journey.
 
 
 ```{r}
@@ -37,27 +42,31 @@ bikes_data <- nyc_bikes
 
 bikes_data %>% head()
 ```
+## Create new variables for analysis
 
 ```{r}
-bikes_data %>% 
-  index_by(start_month) %>% 
-  summarise(count = n())
-```
-
-
-
-
-
-
-
-
-```{r}
-#create variables for date, month, year from start_time
+#create variables for date, month, weekday, year from start_time
 bikes_data <- bikes_data %>% 
   mutate(start_date = date(start_time),
          start_month = month(start_time, label = TRUE),
-         start_year = year(start_time), .after = start_time)
+         start_year = year(start_time),
+         start_wday = wday(start_time, label = TRUE),
+         .after = start_time)
 ```
+
+```{r}
+#create variable that extracts the time from start_time
+bikes_data <- bikes_data %>% 
+  mutate(start_time_clock = as_hms(ymd_hms(start_time)), .after = start_time)
+```
+
+
+```{r}
+#create variable for customer/subscriber age
+bikes_data <- bikes_data %>% 
+  mutate(age = start_year - birth_year, .after = birth_year)
+```
+
 
 ```{r}
 #create variable for use duration in minutes
@@ -66,26 +75,231 @@ bikes_data <- bikes_data %>%
          use_duration_mins = as.numeric(use_period, "minutes"))
 ```
 
+## Fix problems identified in dataset
+
 ```{r}
+#look at top values in use_duration_mins
 bikes_data %>% 
   slice_max(use_duration_mins, n = 10)
 ```
+There are two very high values here that show use_duration_mins as over 5000. After looking at the lat/long for the start and end stations, they are fairly close together. It is likely that these long use periods are the result of returning the bikes incorrectly (the website states that you have to wait for the green light). So if the bikes weren't returned correctly, the stop_time wouldn't be recorded until someone (e.g. another customer or someone who maintains the bikes for the company) returned it correctly. Since there are some high values in the dataset that will pull the mean higher, I have chosen to impute them with the median duration for the subscribers group (since both are subscribers).
 
+```{r}
+#get median use_duration_mins for subscribers
+median_use_duration_subscriber <- as.tibble(bikes_data) %>% 
+  filter(type == "Subscriber") %>% 
+  summarise(median_use_duration = median(use_duration_mins)) %>% pull()
+
+#impute use_duration_mins with values over 5000 with median
+bikes_data <- bikes_data %>% 
+  mutate(use_duration_mins = if_else(
+    use_duration_mins > 5000, 
+    median_use_duration_subscriber,
+    use_duration_mins
+  )) 
+```
+
+
+## Explore using plots
+
+### Demographic variables and use_duration_mins
 
 ```{r}
 bikes_data %>% 
   ggplot(aes(x = use_duration_mins, 
-             y = gender)) +
-  geom_boxplot(outlier.colour = "red") +
-  geom_jitter() +
+             y = gender,
+             color = type)) +
+  geom_boxplot(outlier.colour = "black", outlier.size = 1) +
+  geom_jitter(size = 0.7, alpha = 0.5) +
+  scale_color_manual(values = c("tomato", "seagreen")) +
   scale_x_log10()
 ```
+
+```{r}
+as.tibble(bikes_data) %>% 
+  group_by(gender, type) %>% 
+  summarise(num_rides = n()) %>% 
+  ggplot(aes(x = gender, 
+             y = num_rides,
+             fill = type)) +
+  geom_col() +
+  scale_color_manual(values = c("tomato", "seagreen"))
+```
+
+
 
 ```{r}
 bikes_data %>% 
   ggplot(aes(x = use_duration_mins)) +
   geom_histogram(col = "white") +
   facet_wrap(~gender) +
-  scale_x_continuous("log10")
+  scale_x_log10()
+```
+
+```{r}
+#get line graph with data points for counts by month
+bikes_data %>% 
+  index_by(start_month) %>% 
+  summarise(count = n()) %>% 
+  ggplot(aes(x = start_month,
+             y = count)) +
+  geom_point() +
+  geom_line(group = 1)
+```
+
+
+
+
+
+
+
+
+
+```{r}
+rides_rolling <- bikes_data %>% 
+  index_by(start_date) %>% 
+  summarise(num_of_rides = n()) %>% 
+  mutate(rides_moving_avg = slide_dbl(
+    .x = num_of_rides,
+    .f = ~mean(., na.rm = TRUE),
+    .before = 7,
+    .after = 7,
+    .complete = TRUE
+  ))
+
+
+
+
+  ggplot(rides_rolling) +
+  geom_point(aes(x = start_date,
+                 y = num_of_rides), colour = "grey50",
+             alpha = 0.5, size = 1) +
+  geom_line(aes(x = start_date,
+                y = num_of_rides), colour = "grey50") +
+  geom_line(aes(x = start_date,
+                y = rides_moving_avg), colour = "blue") +
+  labs(x = "Date",
+       y = "Number of rides") +
+  ggtitle("Bike hires for 2018") +
+    theme(plot.title = element_text(size = 25),
+          axis.text = element_text(size = 12),
+          axis.title = element_text(size = 15))
+  
+  ggsave(filename = "annual_bike_hire_2018.png")
+```
+
+
+```{r}
+bikes_data %>% 
+  index_by(start_wday) %>% 
+  summarise(num_of_rides = n()) %>% 
+  ggplot(aes(x = start_wday,
+             y = num_of_rides)) +
+  geom_point(color = "blue") +
+  geom_line(group = 1, color = "grey50") +
+  labs(x = "Day of the week",
+       y = "Number of rides") +
+  ggtitle("Bike hires across the week") +
+    theme(plot.title = element_text(size = 25),
+          axis.text = element_text(size = 12),
+          axis.title = element_text(size = 15))
+ggsave(filename = "bike_hire_week.png")
+```
+
+```{r}
+bikes_data <- bikes_data %>% 
+  mutate(start_time_hour = hour(start_time_clock), .after = start_time_clock) 
+```
+
+```{r}
+as.tibble(bikes_data) %>% 
+  group_by(start_wday, start_time_hour) %>% 
+  summarise(num_rides = n()) %>% 
+  ggplot(aes(x = start_time_hour,
+         y = num_rides)) +
+  geom_line(aes(colour = start_wday)) +
+  labs(x = "Start time",
+       y = "Number of rides",
+       colour = "Week day") +
+  ggtitle("Bike hires for 2018") +
+    theme(plot.title = element_text(size = 25),
+          axis.text = element_text(size = 12),
+          axis.title = element_text(size = 15))
+  
+```
+```{r}
+as.tibble(bikes_data) %>% 
+  mutate(weekday_weekend = if_else(start_wday %in% c("Sat", "Sun"), "Weekend", "Weekday"), .after = start_wday) %>% 
+  group_by(weekday_weekend, start_time_hour) %>% 
+  summarise(num_rides = n()) %>% 
+  ggplot(aes(x = start_time_hour,
+         y = num_rides)) +
+  geom_line(aes(colour = weekday_weekend)) +
+  labs(x = "Start time",
+       y = "Number of rides",
+       colour = " ") +
+  ggtitle("Weekday vs Weekend bike hires") +
+    theme(plot.title = element_text(size = 20),
+          axis.text = element_text(size = 12),
+          axis.title = element_text(size = 15))
+
+ggsave("weekday_weekend_hires.png")
+```
+
+
+```{r}
+as.tibble(bikes_data) %>% 
+  select(start_station, start_lat, start_long) %>% 
+  group_by(start_station, start_lat, start_long) %>% 
+  summarise(num_rides = n()) %>% 
+  arrange(desc(num_rides))
+```
+
+
+
+
+
+```{r}
+#plot map of starting stations and number of rides from each
+as.tibble(bikes_data) %>% 
+  select(start_station, start_lat, start_long) %>% 
+  group_by(start_station, start_lat, start_long) %>% 
+  summarise(num_rides = n()) %>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addCircles(
+    lng = ~start_long,
+    lat = ~start_lat,
+    radius = ~num_rides,
+    popup = ~paste0("Station number: ", start_station, 
+                    " Number of rides:", num_rides)
+  )
+  
+```
+
+```{r}
+#plot map of end stations with number of rides from each
+as.tibble(bikes_data) %>% 
+  select(end_station, end_lat, end_long) %>% 
+  group_by(end_station, end_lat, end_long) %>% 
+  summarise(num_rides = n()) %>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addCircles(
+    lng = ~end_long,
+    lat = ~end_lat,
+    radius = ~num_rides,
+    popup = ~paste0("Station number: ", end_station, 
+                    " Number of rides:", num_rides)
+  )
+  
+```
+
+```{r}
+as.tibble(bikes_data) %>% 
+  select(start_station, start_wday, start_time_hour) %>% 
+  group_by(start_station, start_wday, start_time_hour) %>% 
+  summarise(num_rides = n()) %>% 
+  arrange(desc(num_rides))
 ```
 
