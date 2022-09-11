@@ -99,6 +99,34 @@ bikes_data <- bikes_data %>%
   )) 
 ```
 
+```{r}
+#check for ages outside "normal" range
+bikes_data %>% 
+  slice_max(age, n = 10)
+
+bikes_data %>% 
+  slice_min(age, n = 10)
+```
+```{r}
+#only two birth years are obviously incorrect, change them directly.
+
+bikes_data <- bikes_data %>% 
+  mutate(birth_year = if_else(
+    birth_year %in% c(1887, 1888), birth_year + 100, birth_year
+  ))
+
+```
+
+```{r}
+#overwrite age to change the high values
+bikes_data <- bikes_data %>% 
+  mutate(age = start_year - birth_year, .after = birth_year)
+```
+
+```{r}
+write_csv(bikes_data, file = "clean_bikes_data.csv")
+```
+
 
 ## Explore using plots
 
