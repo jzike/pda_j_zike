@@ -1,0 +1,225 @@
+---
+title: "Reviewing & debugging code"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    css: ../../../styles.css
+  pdf_document: default
+---
+
+
+```{r, message = FALSE, warning=FALSE}
+library(tidyverse)
+energy_scotland <- read_csv("data/energy_scotland.csv")
+energy_scotland
+```
+
+```{r,message=FALSE, warning=FALSE}
+all_salaries <- read_csv("data/all_salaries.csv")
+all_salaries
+```
+
+# Task 1
+
+Goal: return the row in the data which has the maximum energy production, making sure the code would work if new data was added to the dataset. 
+
+```{r, eval = FALSE}
+max(energy_scotland$energy_prod)
+# this returns value 25165.9 
+
+energy_scotland %>%
+  filter(energy_prod == 25165.9)
+```
+
+## 1.1. Explanation
+This isn't the best way to achieve the goal. First, filtering the dataset for the max value found in the first line of code wouldn't work if new data was added to the dataset and there was a new max value unless you repeated the two step process above every time you added new data. The slice_max function would be more a more efficient and flexible choice here, making the code more robust to changes in the data.
+
+## 1.2. Code revision
+
+```{r}
+energy_scotland %>% 
+  slice_max(energy_prod, n = 1)
+```
+
+
+
+# Task 2
+
+Goal: create a new column called 'rating' to the energy table which will take the following values in the table. The bins should be inclusive of the upper value e.g. is the energy production is 20,000 exactly then will be 'high', if it's 10,000 exactly then will be 'medium', etc. 
+
+| lower energy production | upper energy production | rating    |   
+|-------------------------|-------------------------|-----------|
+| 20000                   |                         | very high |   
+| 10000                   | 20000                   | high      |  
+| 5000                    | 10000                   | medium    |  
+| 2000                    | 5000                    | low       |   
+|                         | 2000                    | very low  | 
+
+```{r, eval = FALSE}
+rating <- if_else(energy_scotland$energy_prod > 20000, "very high", if_else(energy_scotland$energy_prod > 10000 & energy_scotland$energy_prod <= 20000, "high", if_else(energy_scotland$energy_prod > 5000 & energy_scotland$energy_prod <= 10000, "medium", if_else(energy_scotland$energy_prod > 2000 & energy_scotland$energy_prod <= 5000, "low", "very low"))))
+
+energy_scotland_rating <- bind_cols(energy_scotland, rating = rating)
+```
+## 2.1. Explanation
+The code above is a bit inefficient for a task that could be achieved in a single pipeline. Although it does work in the end, it is difficult to read and needs to assign a list object before binding this column onto the original table. Using mutate and case_when would be a much easier way of achieving this goal in one pipeline.
+
+## 2.2. Code revision
+
+```{r}
+energy_scotland <- energy_scotland %>% 
+  mutate(rating = case_when(
+    energy_prod > 20000 ~ "very high",
+    energy_prod > 10000 ~ "high",
+    energy_prod > 5000  ~ "medium",
+    energy_prod > 2000  ~ "low",
+    TRUE                ~ "very low"
+  ))
+```
+
+
+# Task 3
+
+Goal: create a plot which shows how the energy production for the sectors renewables, gas and pumped hydro compare over time.
+
+```{r, eval = FALSE}
+renewable <- energy_scotland %>%
+  filter(sector == "Renewables")
+
+gas <- energy_scotland %>%
+  filter(sector == "Gas")
+
+hydro <- energy_scotland %>%
+  filter(sector == "Pumped hydro")
+
+years <- unique(energy_scotland$year)
+
+ggplot() +
+  geom_line(aes(x = year, y = energy_prod,  color = sector), data = renewable) +
+  geom_line(aes(x = year, y = energy_prod, color = sector), data = gas) +
+  geom_line(aes(x = year, y = energy_prod, color = sector), data = hydro) +
+  scale_x_continuous(breaks = years) +
+  labs(title = "Energy production in Scotland over time split by sector", x ="Year", y = "Energy production")
+```
+
+## 3.1 Explanation:
+Again, this works to create the plot, but it creates unnecessary sub-datasets for each sector instead of simply filtering the dataset and then using the colour aesthetic argument in the geom_line.
+
+## 3.2 Code revision
+
+```{r}
+energy_scotland %>% 
+  filter(sector %in% c("Renewables", "Gas", "Pumped hydro")) %>% 
+  ggplot(aes(x = factor(year),
+             y = energy_prod)) +
+  geom_line(aes(colour = sector, group = sector)) +
+  labs(title = "Energy production in Scotland over time split by sector", 
+       x ="Year", 
+       y = "Energy production")
+
+```
+
+
+
+# Task 4
+
+Goal: calculate the average energy production for the Coal, Gas, and Oil sectors across the time period in the data.
+
+```{r, eval = FALSE}
+energy_scotland %>%
+  filter(sector == c("Coal", "Gas", "Oil")) %>%
+  group_by(sector) %>%
+  summarise(avg_energy_prod = mean(energy_prod))
+```
+
+## 4.1. Explanation
+The above code isn't reaching the goal because it returns the average energy production of all the yea together. We need to also group by year. Additionally, the filter should be using "%in%" instead of "==" to specify that all results that are in the list should show up in the filtered table.
+
+
+## 4.2. Code revision
+```{r}
+energy_scotland %>%
+  filter(sector %in% c("Coal", "Gas", "Oil")) %>%
+  group_by(sector, year) %>%
+  summarise(avg_energy_prod = mean(energy_prod))
+```
+
+
+# Task 5 
+
+```{r, eval = TRUE}
+student <- tibble(
+  Name = c("Brian", "David", "Karen"),
+  age = c(25, 56, 40),
+  location = c("Scotland", "England", "scotland"),
+  `email address` = c("briang@yahoo.co.uk", "dsmith@gmail.co.uk", "karen")
+)
+
+student
+```
+Goal: clean up this tibble by only returning the name, location and email address information, putting the location information into lowercase and also creating a new column called `valid_email` to have values `TRUE` or `FALSE` whether the email address is valid. Here our definition is valid is that it contains an `@` symbol followed by a combination of lowercase characters or a `.` symbol.
+
+```{r, eval = FALSE}
+student %>%
+  select(name, location, email_address) %>%
+  janitor::clean_names() %>%
+  str_to_lower(location) 
+  mutate(valid_email = str_detect(email_address, "@a-z.")
+```
+
+## 5.1. Explanation
+The code above doesn't work. It is trying to select the "name" column when it is still "Name" because janitor hasn't been used to clean up column names yet. The str_to_lower function needs to be inside a mutate in order to use the function over an entire column. Lastly, the regex expression in the str_detect function doesn't give us an accurate result.
+
+## 5.2 Code revision
+```{r}
+student %>%
+  janitor::clean_names() %>%
+  select(name, location, email_address) %>%
+  mutate(location = str_to_lower(location)) %>% 
+  mutate(valid_email = str_detect(email_address, "@[a-z]+."))
+```
+
+
+
+# Task 6
+
+Goal: create a function to work on the all_salaries dataframe (or a similar dataframe that has a column `salary` and `job_area`). The function should take in the dataframe (`dataframe_input`) and a job area (`job_area_input`) and a salary value (`salary_input`). The function should only return the employees in the dataframe that have a salary above this value `salary_input` and who work in job area `job_area_input`. For example if `job_area_input` was 'Legal' and `salary_input` was 30000 then the function would return the following output:
+
+![](images/desired_function_output.png)
+
+```{r, eval = FALSE}
+subsetting_salaries <- function(dataframe_input,job_area_input,salary_input){ 
+  data <- dataframe_input %>% select(job_area) %>% filter(job_area == job_area_input)
+  data1 <- data[data$savings > salary_input, ]
+}
+
+subsetting_salaries(all_salaries,Human Resources, 30000)
+```
+## 6.1. Explanation
+The function above does not get us to our goal and also doesn't really make any sense. The second line selects only the job area column and then filters for the job area input, but we want all the columns so that we can select a salary input. The third line then looks like it's trying to evaluate whether the savings column (which doesn't exist in the data object assigned in the function because only job area has been selected) is more than the salary input, which doesn't even get us close to what we're trying to do. There is then a comma with nothing following it, leaving the function unfinished.
+
+Lastly, the user who is trying to use the function hasn't put Human Resources in quotes, so R thinks that it is an object rather than a string.
+
+## 6.2. Code revision
+
+```{r}
+subsetting_salaries <- function(dataframe_input, job_area_input, salary_input){
+  dataframe_input %>% 
+  filter(job_area == job_area_input,
+         salary > salary_input)
+}
+
+
+subsetting_salaries(all_salaries, "Human Resources", 30000)
+```
+
+
+# PDA Outcomes covered by this task
+
+From Working with Data (J4YB 35):
+
+* 4.0 Test programs for data analysis
+* 4.4 Debugging
+* 4.5 Code review
