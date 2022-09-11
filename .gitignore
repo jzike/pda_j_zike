@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 login.R
+Data_transformation/data_transformation/raw_data/*customers.csv
