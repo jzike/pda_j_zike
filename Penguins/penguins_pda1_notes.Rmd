@@ -12,6 +12,7 @@ library(infer)
 library(janitor)
 library(e1071)
 library(palmerpenguins)
+library(GGally)
 ```
 
 # Data
@@ -179,3 +180,25 @@ The alpha level I chose here (0.05) corresponds with a confidence interval of 95
 The null distribution above assumes that the difference in bill lengths between Gentoo and Adelie penguins is 0, which is why the probablity distribution is centred on 0. As the differences get further away from 0, it becomes less likely that the difference would occur by chance given that the null hypothesis was true. The observed difference in mean bill lengths between Gentoo and Adelie penguins was 8.7 and we can see that this value is very unlikely to occur by chance if the true difference is actually 0.
 
 The p value here is less than 0.001, which is less than our defined alpha level of 0.05. This means that there is evidence that the bill lengths of Gentoo penguins are significantly longer than that of Adelie penguins and we can reject the null hypothesis in this case.
+
+# 4. Correlations
+
+```{r}
+ggcorr(penguins[, -8], 
+       label = TRUE,
+       label_alpha = TRUE)
+```
+
+This correlation matrix shows the correlations between bill length, bill depth, flipper length, and body mass across species. 
+
+Bill length and bill depth are weakly negatively correlated, meaning that is a weak tendency for bill length to increase as bill depth decreases. 
+
+Bill length and flipper length are strongly positively correlated, meaning that there is a strong tendency for bill length to increase as flipper length increases
+
+Bill depth and flipper length are strongly negatively correlated, meaning that there is a strong tendency for bill depth to decrease as flipper length increases.
+
+Body mass and flipper length are very strongly positively correlated, meaning that there is a very strong tendency for body mass to increase as flipper length increases.
+
+Body mass and bill depth are moderately negatively correlated, meaning that there is a moderate tendency for body mass to decrease as bill depth increases
+
+Body mass and bill length are strongly positively correlated, meaning that there is a strong tendency for body mass to increase as bill length increases.

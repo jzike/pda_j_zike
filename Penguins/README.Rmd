@@ -1,0 +1,38 @@
+---
+title: "R Notebook"
+output: github_document
+---
+
+
+# Penguins Project
+
+An R project analysing data from the Palmer penguins dataset.
+
+
+
+## Analysis and interpretation R notebook
+
+### Name: penguins_pda1_notes.Rmd
+
+### File description: There are four separate sections: exploratory analysis, summary statistics, hypothesis testing and correlations. 
+
+### Assumptions
+1) That there were no cross-species penguins in the dataset - e.g. the same penguins weren't classified as more than one species (important for hypothesis testing)
+2) That there was a linear relationship between the continuous variables in the dataset (important for correlations)
+
+### Exploratory analysis:
+
+1) First box plots and histograms were used to visualise the spread of bill_length_mm for all three different penguin species in the dataset. <br>
+2) I discussed the differences in bill length among the three penguin species.
+
+### Summary statistics
+1) I calculated the mean, median, standard deviation and skewness for each species group in the dataset.
+2) This allowed the datasets to be compared more concretely in terms of mean, median and standard deviation(spead of the data) and to confirm that none of the datasets were highly skewed.
+
+### Hypothesis testing
+1) I performed a two-sample independent hypothesis test to check whether the mean bill length of Gentoo penguins is significantly longer than the mean bill length of Adelie penguins.
+2) A one tailed test was used and I found that there was evidence that the mean bill length of Gentoo penguins was significantly longer than the mean bill length of Adelie penguins, meaning that we could reject the null hypothesis in this case.
+
+### Correlations
+1) I used ggcorr to plot a correlation matrix for the variables bill_length, bill_depth, flipper_length and body_mass.
+2) I wrote up a summary of the strength of the correlations between each of these variables to explain the Pearson r values.
