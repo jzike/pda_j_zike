@@ -4,12 +4,12 @@ output:
   html_document:
     toc: true
     toc_float: true
-    number_sections: true
+    number_sections: false
     df_print: paged
     css: ../../../styles.css
   pdf_document: default
 ---
-
+# Libraries and data
 
 ```{r, message = FALSE, warning=FALSE}
 library(tidyverse)
@@ -21,6 +21,12 @@ energy_scotland
 all_salaries <- read_csv("data/all_salaries.csv")
 all_salaries
 ```
+
+# Notes on PDA outcomes
+
+4.4 Debugging - please see code revision section for any of the tasks - this is my revision of the incorrect/inefficient code
+4.5 Code review - please see explanation section for any of the tasks - this is my explanation of what is wrong with the code and what could be done differently to make it work or to make it more efficient and flexible to new data.
+
 
 # Task 1
 

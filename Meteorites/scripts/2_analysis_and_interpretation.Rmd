@@ -91,13 +91,18 @@ get_meteorite_count <- function(dataset, year_of_interest){
 #Uses the meteorite count from above and returns the number of meteorites if there was at least one counted in that year
 if(meteorite_count >= 1){
   return(paste0("In ", year_of_interest, " there were ", meteorite_count, " meteorites"))
-}
-if(meteorite_count == 0){
+} else {
   return("As far as we know, there were no meteorites that year")
 }
+#if(meteorite_count == 0){
+#  return("As far as we know, there were no meteorites that year")
+#}
 }
 ```
 
+```{r}
+get_meteorite_count(meteorites_cleaned, TRUE)
+```
 
 
 ## Plans for improving/testing the get_meteorite() function
@@ -121,12 +126,12 @@ Test plans for the function
 ```{r}
 
 test_that("Non-numeric input returns an error", {
-  expect_error(get_meteorite_count(TRUE))
-  expect_error(get_meteorite_count("year"))
+  expect_error(get_meteorite_count(meteorites_cleaned, TRUE))
+  expect_error(get_meteorite_count(meteorites_cleaned, "year"))
 })
 
 ```
-The test was passed, so entering logical and character input into the function does return an error, but we should also check to see what kind of error is returned.
+The test was failed
 
 ```{r}
 get_meteorite_count("year")
@@ -225,7 +230,7 @@ meteorites_cleaned %>%
   ggplot(aes(x = mass_g, y = fall)) +
   geom_boxplot(aes(fill = fall), outlier.colour = "red") +
   scale_x_continuous(trans = "log10", name = "log(mass)", labels = scales::comma) +
-  geom_jitter(width = 0.2, colour = "grey60", alpha = 0.5) +
+  geom_jitter(width = 0.2, colour = "grey60", alpha = 0.3) +
   ggtitle("Mass in grams for found vs fallen meteorites")
 ```
 The box plot above shows the mass of found versus fallen meteorites with the individual meteorite observations overlayed on the boxplots to better show where observations were concentrated. The red points are considered outliers and represent very heavy meteorites compared with the rest of the observations for that group. 
@@ -235,3 +240,93 @@ This is interesting because in the analysis above, I found that the mean mass fo
 This has also had an effect on our comparison in the exploratory analysis section above as the median mass for falling meteorites is actually higher than the median for found meteorites. However, because there are more observations for found meteorites, there are also more very heavy outliers that drastically increase the mean value for found meteorites. 
 
 
+# Decision tree
+
+## Libraries 
+```{r}
+library(modelr)
+library(rpart)
+library(rpart.plot)
+library(janitor)
+library(yardstick)
+```
+
+## Clean up data
+
+```{r}
+meteorites_tree <- meteorites_joined %>% 
+  filter(!is.na(fall)) %>% 
+  mutate(across(where(is.character), as.factor)) %>% 
+  select(-c(id, latitude, longitude, class, name)) %>% 
+  na.omit()
+```
+
+## Test and train datasets
+### PDA 4.2 Testing datasets
+### PDA 4.3 Training datasets
+```{r}
+#create test and train datasets
+n_data <- nrow(meteorites_tree)
+
+test_index <- sample(1:n_data, size = n_data * 0.20)
+
+test_meteorites <- slice(meteorites_tree, test_index)
+train_meteorites <- slice(meteorites_tree, -test_index)
+```
+
+### Check split of fallen/found meteorites
+
+```{r}
+test_meteorites %>% 
+  tabyl(fall)
+```
+```{r}
+train_meteorites %>% 
+  tabyl(fall)
+```
+It's a pretty even split, so we can proceed.
+
+## Make the decision tree
+### PDA 4.3 Training datasets
+```{r}
+#fit the model on the training dataset
+meteor_fit <- rpart(fall ~ .,
+                    data = train_meteorites,
+                    method = "class")
+```
+
+```{r}
+#plot the decision tree for training dataset
+rpart.plot(meteor_fit,
+           yesno = 2,
+           fallen.leaves = TRUE,
+           faclen = 4,
+           digits = 4)
+```
+
+## Test decision tree on test data
+### PDA 4.2 Testing datasets
+
+```{r}
+#add predictions to the test dataset
+test_meteorites_pred <- test_meteorites %>% 
+  add_predictions(meteor_fit, type = "class")
+```
+
+```{r}
+#create the confusion matrix
+conf_matrix <- test_meteorites_pred %>% 
+  conf_mat(truth = fall,
+           estimate = pred)
+```
+
+We have 45 true fallen meteorites predicted and 19 false found meteorites. That's a true negative rate of 70%
+```{r}
+45/(45 + 19)
+```
+
+We have 791 true found meteorites predicted and 107 false fallen meteorites. That's a true positive rate of 88%.
+
+```{r}
+791/(791 + 107)
+```

@@ -173,22 +173,29 @@ p_value
 ```
 
 
-The p value indicates how likely it would be to see a certain observed statistic given that the null hypothesis was true. They relate to probability in that a p value of 1 would mean that we would definitely see that observed statistic given that the null hypothesis was true. Hypothetically, a p value of 0 would mean that it would be impossible to see that observed statistic given that the null hypothesis was true, but there are no p values of 0, because even if it is extremely unlikely, it's still technically possible to observe something by chance. Nevertheless, p values that are very low indicate that it would be strange to see the observed statistic by chance given that the null hypothesis was true.
+The p value indicates how likely it would be to see a certain observed statistic given that the null hypothesis was true. They relate to probability in that a p value of 1 would mean that we would definitely see that observed statistic given that the null hypothesis was true. Hypothetically, a p value of 0 would mean that it would be impossible to see that observed statistic given that the null hypothesis was true, but there are no p values of 0, because even if it is extremely unlikely, it's still technically possible to observe something by chance. Nevertheless, p values that are very low indicate that it would be strange to see the observed statistic by chance given that the null hypothesis was true.<br>
 
-The alpha level I chose here (0.05) corresponds with a confidence interval of 95%. This means we can be 95% sure that the population value of our statistic of interest lies within this interval. Values that fall outside of this interval would return a p value of less than 0.05, allowing us to reject that null hypothesis since there would be evidence that the alternative hypothesis was true. However, we would reject the null hypothesis wrongly around 1 time in 20 (5% of the time), producing a type 1 error.
+The alpha level I chose here (0.05) corresponds with a confidence interval of 95%. This means we can be 95% sure that the population value of our statistic of interest lies within this interval. Values that fall outside of this interval would return a p value of less than 0.05, allowing us to reject that null hypothesis since there would be evidence that the alternative hypothesis was true. However, we would reject the null hypothesis wrongly around 1 time in 20 (5% of the time), producing a type 1 error.<br>
 
-The null distribution above assumes that the difference in bill lengths between Gentoo and Adelie penguins is 0, which is why the probablity distribution is centred on 0. As the differences get further away from 0, it becomes less likely that the difference would occur by chance given that the null hypothesis was true. The observed difference in mean bill lengths between Gentoo and Adelie penguins was 8.7 and we can see that this value is very unlikely to occur by chance if the true difference is actually 0.
+The null hypothesis states that there is really no significant difference in bill length between the two penguin species. So, the null distribution generated in the above test uses permutation or random shuffling, which shuffles around the penguin species (Gentoo and Adelie) and randomly assigns them to different bill lengths so that any relationship between penguin species and bill lengh in the real dataset is lost. Therefore, every observation in the null distribution represents a randomly assigned species label (either Gentoo or Adelie) and an observed value for bill length. <br>
+
+The null distribution above assumes that the difference in bill lengths between Gentoo and Adelie penguins is 0, which is why the probablity distribution is centred on 0. As the differences get further away from 0, it becomes less likely that the difference would occur by chance given that the null hypothesis was true. The observed difference in mean bill lengths between Gentoo and Adelie penguins was 8.7 and we can see that this value is very unlikely to occur by chance if the true difference is actually 0.<br>
 
 The p value here is less than 0.001, which is less than our defined alpha level of 0.05. This means that there is evidence that the bill lengths of Gentoo penguins are significantly longer than that of Adelie penguins and we can reject the null hypothesis in this case.
 
 # 4. Correlations
 
 ```{r}
+#4.5 concept of correlation and correlation matrices
 ggcorr(penguins[, -8], 
        label = TRUE,
        label_alpha = TRUE)
 ```
+<br>
 
+## PDA outcomes:
+4.5 - Concept of correlation and correlation matrices<br>
+4.8 - Documenting analyses <br>
 This correlation matrix shows the correlations between bill length, bill depth, flipper length, and body mass across species. 
 
 Bill length and bill depth are weakly negatively correlated, meaning that is a weak tendency for bill length to increase as bill depth decreases. 
